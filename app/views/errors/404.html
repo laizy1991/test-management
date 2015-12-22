@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta http-equiv="Content-Type" charset="${_response_encoding}">
+        <meta name="keywords" content="">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+        <link rel="shortcut icon" href="@{'/public/images/favicon.ico'}" type="image/x-icon" />
+        <title>404 - 页面无法找到</title>
+        <style>
+            html,body,div,img,p{margin:0;padding:0;}
+            body{font: 100% 1;}
+            .header{border-bottom:1px solid #E5E5E5;}
+            .header-inner{width:1200px;height:84px;margin:0 auto;}
+            .header-inner .logo img{margin-top:20px;border:0 none;}
+            .content{position:relative;background-color:#F2F2F2;height:715px;}
+            .main{background:url(@{'/public/images/404.png'}) no-repeat center top;width:900px;height:66px;position:absolute;left:50%;top:50%;margin:-105px 0 0 -450px;overflow:hidden;text-align:center;padding-top: 144px;font: 400 20px/1.45 arial,microsoft yahei,simsun;color: #999;}
+        </style>
+    </head>
+    <body>
+        <!-- 头部 begin -->
+        <div class="header">
+            <div class="header-inner">
+                <a class="logo" href="/">
+                    #{if sysType == 1}
+                        <img src="@{'/public/images/logo_game.png'}">
+                    #{/if}
+                    #{elseif sysType == 2}
+                        <img src="@{'/public/images/logo.png'}">
+                    #{/elseif}
+                </a>
+            </div>
+        </div>
+        <!-- 头部 end -->
+    
+        <!-- 主内容区 begin -->
+        <div class="content">
+            <div class="main">
+                <p>哎呀，404</p>
+                <p>苦B的程序猿尽力了，还是没有找回来......</p>
+            </div>
+        </div>
+        <!-- 主内容区 end -->
+    </body>
+</html>
