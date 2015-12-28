@@ -35,13 +35,15 @@
         </tr>
         </thead>
         #{if emailInfos == null || emailInfos.size() == 0 }
-            <tr><td colspan="6" style="text-align:center;">暂无记录<td></tr>
+            <tr><td colspan="5" style="text-align:center;">暂无记录<td></tr>
         #{/if}
         #{else}
         #{list items:emailInfos, as:'info'}
         <tbody>
         <tr class="user-item">
-        <input type="hidden" class="id" name="id" value="${info.id}">
+            <input type="hidden" class="id" name="id" value="${info.id}">
+            <input type="hidden" class="name" name="name" value="${info.name}">
+            <input type="hidden" class="address" name="address" value="${info.address}">
             <td>${info?.name}</td>
             <td>${info?.address}</td>
             <td>${info?.department}</td>
@@ -65,7 +67,7 @@
 <div id="pagination" class="text-center">
     <!--首页-->
     <ul class="pagination pagination-lg" style="padding-right: 20px;">
-        <li><a href='/emailinfo/list?pageNow=1'>首页</a></li>
+        <li><a href='/emailinfos/list?pageNow=1'>首页</a></li>
     </ul>
     <!--分页-->
     <ul class="pagination pagination-lg">
@@ -98,23 +100,23 @@
         //显示分页信息<
         //显示上一页<
         if (pages > 1) {
-        out.print("<li><a href='/emailinfo/list?pageNow="+(pages-1)+"'>&laquo;</a></li>");
+        out.print("<li><a href='/emailinfos/list?pageNow="+(pages-1)+"'>&laquo;</a></li>");
         }
         //显示上一页>
         //显示分页码<
         for (int i = listbegin; i < listend; i++) {
         if (i != pages) {//如果i不等于当前页
-        out.print("<li><a href='/emailinfo/list?pageNow="+i+"'>"+i+"</a></li>");
+        out.print("<li><a href='/emailinfos/list?pageNow="+i+"'>"+i+"</a></li>");
         } else {
         //当前页
-        out.print("<li class='active'><a href='/emailinfo/list?pageNow="+i+"'>"+i+"</a></li>");
+        out.print("<li class='active'><a href='/emailinfos/list?pageNow="+i+"'>"+i+"</a></li>");
         }
         }
 
         //显示分页码>
         //<显示下一页>
             if (pages != pagescount) {
-            out.print("<li><a href='/emailinfo/list?pageNow="+(pages+1)+"'>&raquo;</a></li>");
+            out.print("<li><a href='/emailinfos/list?pageNow="+(pages+1)+"'>&raquo;</a></li>");
         }
         //显示下一页>
         //显示分页信息>
@@ -122,7 +124,7 @@
     </ul>
     <!--未页-->
     <ul class="pagination pagination-lg" style="padding-left: 20px;">
-        <li><a href='/emailinfo/list?pageNow=${pageCount}'><span>未页:${pageCount}页</span></a></li>
+        <li><a href='/emailinfos/list?pageNow=${pageCount}'><span>未页:${pageCount}页</span></a></li>
     </ul>
 </div>
 #{/if}
@@ -136,35 +138,28 @@
 
 <script id="createDialogTmpl" type="text/html">
     <div class="dialog dialog-create">
-        <form action="@{ajax.EmailInfo.add}" id="createEmail">
+        <form action="@{ajax.EmailInfos.add}" id="createEmail">
             <div class="form-group">
                 <label class="label"><span class="asterisk">*</span>部门</label>
                 <div class="col" id="dep-list">
-                    
+                    <select id='gameId' name='email.departmentId'>
+                            <option value='0'>测试</option>
+                            <option value='1'>开发</option>
+                            <option value='2'>其他</option>
+                    </select>
                 </div>
-        </div>
-<div class="form-group">
-                <label class="label"><span class="asterisk">*</span>名字</label>
+            </div>
+            <div class="form-group">
+                <label class="label"><span class="asterisk">*</span>姓名</label>
                 <div class="col">
-                    <input type="text" name="levelPay.percentage" value="" style='width:150px'>
+                    <input type="text" name="email.name" value="" style='width:150px'>
                     <span class="msg error-text">必填项！</span>
                 </div>
             </div>
-        </form>
-    </div>
-<div class="form-group">
-                <label class="label"><span class="asterisk">*</span>名字</label>
+            <div class="form-group">
+                <label class="label"><span class="asterisk">*</span>邮箱地址</label>
                 <div class="col">
-                    <input type="text" name="levelPay.percentage" value="" style='width:150px'>
-                    <span class="msg error-text">必填项！</span>
-                </div>
-            </div>
-        </form>
-    </div>
-<div class="form-group">
-                <label class="label"><span class="asterisk">*</span>名字</label>
-                <div class="col">
-                    <input type="text" name="levelPay.percentage" value="" style='width:150px'>
+                    <input type="text" name="email.address" value="" style='width:150px'>
                     <span class="msg error-text">必填项！</span>
                 </div>
             </div>
@@ -175,29 +170,45 @@
 <!-- 删除 -->
 <script id="deleteDialogTmpl" type="text/html">
     <div class="dialog dialog-create">
-        <form action="@{ajax.Distributor.deleteLevelPay}" id="deleteLevel">
+        <form action="@{ajax.EmailInfos.delete}" id="deleteEmail">
             <div class="form-group">
-                <input type="hidden" class="in-t" id="level" name="level" value="">
-                <input type="hidden" class="in-t" id="gameId" name="gameId" value="">
+                <input type="hidden" class="in-t" id="emailId" name="email.id" value="">
                 <label class="label">确定删除？</label>
             </div>
         </form>
     </div>
 </script>
 
-<!-- 编辑用户信息 -->
+<!-- 编辑邮箱信息 -->
 <script id="editDialogTmpl" type="text/html">
     <div class="dialog dialog-create">
-            <form action="@{ajax.Distributor.updateLevelPay}" id="updateLevel">
+            <form action="@{ajax.EmailInfos.update}" id="updateLevel">
                 <div class="form-group">
-                    <label class="label"><span class="asterisk">*</span>提成</label>
-                    <div class="col">
-                        <input type="hidden" class="in-t" id="gameId" name="levelPay.gameId" value="">
-                        <input type="hidden" class="in-t" id="level" name="levelPay.level" value="">
-                        <input type="text" class="in-t" id="percentage" name="levelPay.percentage" value="">
-                        <span class="msg error-text">必填项！</span>
-                    </div>
+                <label class="label"><span class="asterisk">*</span>部门</label>
+                <div class="col" id="dep-list">
+                    <select id='gameId' name='email.departmentId'>
+                            <option value='0'>测试</option>
+                            <option value='1'>开发</option>
+                            <option value='2'>其他</option>
+                    </select>
                 </div>
+                </div>
+
+            <div class="form-group">
+                <label class="label"><span class="asterisk">*</span>姓名</label>
+                <div class="col">
+                    <input type="text" name="email.name" id="emailName" value="" style='width:150px'>
+                    <span class="msg error-text">必填项！</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="label"><span class="asterisk">*</span>邮箱地址</label>
+                <div class="col">
+                    <input type="hidden" class="in-t" id="emailId" name="email.id" value="">
+                    <input type="text" name="email.address" id="emailAddress" value="" style='width:150px'>
+                    <span class="msg error-text">必填项！</span>
+                </div>
+            </div>
             </form>
     </div>
 </script>
@@ -211,6 +222,6 @@
                 [ '.js', '.js?v='+verNum]
             ]
         });
-        seajs.use("@{'/public/js/app/distributor/levelPay.js'}");
+        seajs.use("@{'/public/js/app/modules/emailinfos.js'}");
     </script>
 #{/set}

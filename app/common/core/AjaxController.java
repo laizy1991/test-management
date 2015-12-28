@@ -1,24 +1,17 @@
 package common.core;
 
+import org.h2.util.StringUtils;
+
 import play.Logger;
 import play.i18n.Messages;
 import play.mvc.Before;
 import play.mvc.Catch;
-import play.mvc.Controller;
 import play.mvc.Http;
 import play.mvc.Http.Request;
-import play.mvc.Scope.Session;
 import play.mvc.results.RenderJson;
-
-import org.h2.util.StringUtils;
-
-import utils.StringUtil;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import common.annotation.GuestAuthorization;
-
-import controllers.Application;
 
 import exception.BusinessException;
 
@@ -30,18 +23,7 @@ public class AjaxController extends BaseController {
 	protected static void beforeAction() throws SecurityException, NoSuchMethodException {
 		
 		Logger.info("Action - %s", Request.current().path);
-		
-		if(getActionAnnotation(GuestAuthorization.class) != null) {
-			return;
-		}
-		
-		String sessionId = Session.current().get("sid");
-		if(StringUtil.isNullOrEmpty(sessionId)) {
-			//请求参数带sid，解决页面使用flash上传时出现cookie丢失
-			sessionId = request.params.get("sid");
-		}
-		
-		renderErrorJson(Messages.get("login.authorize.failed"));
+		return;
 	}
 	
 	@Catch(Exception.class)

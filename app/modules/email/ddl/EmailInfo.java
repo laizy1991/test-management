@@ -2,7 +2,6 @@ package modules.email.ddl;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.Id;
 import javax.persistence.Table;
 
 import play.db.jpa.Model;
@@ -12,8 +11,6 @@ import play.db.jpa.Model;
 public class EmailInfo extends Model{
     //columnDefinition: 表示该字段在数据库中的实际类型 . 通常 ORM 框架可以根据属性类型自动判断数据库中字段的类型 , 但是对于 Date 类型仍无法确定数据库中字段类型究竟是 DATE,TIME 还是 TIMESTAMP. 此外 ,String 的默认映射类型为 VARCHAR, 如果要将 String 类型映射到特定数据库的 BLOB 或 TEXT 字段类型 , 该属性非常有用 .
 
-    @Id
-    private Integer id;
     private String name;
     private String address;
     @Column(name="department_id")
